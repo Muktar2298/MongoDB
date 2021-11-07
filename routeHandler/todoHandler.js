@@ -40,6 +40,7 @@ router.get("/", async (req, res) => {
 
 // GET a single todo by ID
 router.get("/:id", async (req, res) => {
+  // way-01
   /* await Todo.findOne({ _id: req.params.id }, (err, data) => {
     if (err) {
       res.status(500).json({ error: "Server Side Problem" });
@@ -50,11 +51,18 @@ router.get("/:id", async (req, res) => {
       });
     }
   }); */
+
+  // way-02
+  try {
+    const data = await Todo.findOne({ _id: req.params.id });
+    res.status(200).json({ data: data, message: "Success" });
+  } catch (err) {
+    res.status(500).json({ error: "There was a server side Problem!" });
+  }
 });
 
 // insert single todo
 router.post("/", async (req, res) => {
-
   /* // way -01
   const newTodo = new Todo(req.body); // using the Mngoose model
   await newTodo.save((err) => {
@@ -69,7 +77,6 @@ router.post("/", async (req, res) => {
     }
   });  */
 
-  
   // way -02
   try {
     const newTodo = new Todo(req.body);
